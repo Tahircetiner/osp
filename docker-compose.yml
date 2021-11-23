@@ -4,8 +4,6 @@ services:
   db:
     image: postgres
     restart: always
-    volumes:
-      - ./sqlskripte:/docker-entrypoint-initdb.d
     environment:
       POSTGRES_USER: osp-db
       POSTGRES_PASSWORD: prhd5Qs?N
