@@ -11,7 +11,7 @@ import javax.persistence.Table;
 public class Teacher {
 
     @Id
-    private Integer id;
+    private Long id;
 
     private String username;
 

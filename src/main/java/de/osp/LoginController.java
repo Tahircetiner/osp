@@ -18,9 +18,18 @@ public class LoginController {
 
     @Autowired
     private StudentRepository studentRepository;
+    @Autowired
+    private TeacherRepository teacherRepository;
 
     @PostMapping("/login")
     public void authenticateAdmin(@RequestBody Teacher teacher, HttpSession httpSession){
+        var teacherList = teacherRepository.getTeachers();
+        for (Teacher teachers: teacherList
+             ) {
+            System.out.println(teachers.toString());
+        }
+        System.out.println(teacher.toString());
+
         httpSession.setAttribute("username", teacher.getUsername());
         // Wenn Zeit noch übrig ist, schauen ob es nicht einfacher gemacht werden kann
         try {
