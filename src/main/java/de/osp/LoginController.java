@@ -58,14 +58,15 @@ public class LoginController {
 
     @PostMapping("/saveStudent")
     public ValidationMessage saveStudentInformation(@RequestBody Student student){
-
         Validation validation = new Validation();
         ValidationMessage validationMessage = new ValidationMessage();
+
         if(Boolean.FALSE.equals(validation.hasAllFieldsFilled(student))){
-            validationMessage.setMessage("es wurden nicht alle felder ausgefüllt");
+            validationMessage.setMessage("Sie haben nicht alle Felder ausgefüllt. Bitte füllen Sie alle Felder aus und schicken Sie bitte das Formular erneut ab.");
         }
         else{
-            validationMessage.setMessage("du hattest erfolg");
+            validationMessage.setMessage("Sie haben sich erfolgreich an dem Austauschprogramm angemeldet." +
+                    " Bitte wenden Sie sich an ihren zuständigen Lehrer mit ihrem ausgefüllten Anmeldeformular.");
             studentRepository.save(student);
         }
         return validationMessage;

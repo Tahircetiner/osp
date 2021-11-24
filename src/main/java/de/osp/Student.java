@@ -21,7 +21,7 @@ public class Student {
     private String city;
     private String street;
     private String age;
-    private String status;
+    private Boolean status;
     private String emailAddress;
 
     private String grade;
