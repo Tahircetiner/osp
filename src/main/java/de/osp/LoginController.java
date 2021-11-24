@@ -23,11 +23,13 @@ public class LoginController {
 
     @PostMapping("/login")
     public void authenticateAdmin(@RequestBody Teacher teacher, HttpSession httpSession){
-        var teacherList = teacherRepository.getTeachers();
-        for (Teacher teachers: teacherList
+        var teacherList = teacherRepository.findByUsername(teacher.getUsername());
+
+        System.out.println(teacherList);
+        /*for (Teacher teachers: teacherList
              ) {
             System.out.println(teachers.toString());
-        }
+        }*/
         System.out.println(teacher.toString());
 
         httpSession.setAttribute("username", teacher.getUsername());
