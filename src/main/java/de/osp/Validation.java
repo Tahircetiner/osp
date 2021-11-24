@@ -1,11 +1,17 @@
 package de.osp;
 
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Iterator;
 import java.util.Objects;
 
 @Data
 public class Validation {
+
+    @Autowired
+    private StudentRepository studentRepository;
+
     public Boolean hasAllFieldsFilled(Student student){
         Boolean isFieldNotFilled = true;
         if(Objects.isNull(student.getSurName())){
@@ -54,5 +60,16 @@ public class Validation {
             isFieldNotFilled = false;
         }
         return isFieldNotFilled;
+    }
+
+    public Boolean doesStudentAlreadyExists(Student student){
+        Boolean isStudentInDatabase = false;
+        Iterator<Student> students = studentRepository.findAll().iterator();
+        while(students.hasNext()) {
+            if(students.next().equals(student)){
+                isStudentInDatabase = true;
+            }
+        }
+        return isStudentInDatabase;
     }
 }

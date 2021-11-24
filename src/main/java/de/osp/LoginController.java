@@ -51,6 +51,7 @@ public class LoginController {
     public ValidationMessage saveStudentInformation(@RequestBody Student student){
         Validation validation = new Validation();
         ValidationMessage validationMessage = new ValidationMessage();
+
         if(Boolean.FALSE.equals(validation.hasAllFieldsFilled(student))){
             validationMessage.setMessage("Sie haben nicht alle Felder ausgefüllt. Bitte füllen Sie alle Felder aus und schicken Sie bitte das Formular erneut ab.");
         }
