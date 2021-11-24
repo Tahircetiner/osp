@@ -22,31 +22,33 @@ public class LoginController {
     private TeacherRepository teacherRepository;
 
     @PostMapping("/login")
-    public void authenticateAdmin(@RequestBody Teacher teacher, HttpSession httpSession){
-        var teacherList = teacherRepository.findByUsername(teacher.getUsername());
+    public HttpStatus authenticate(@RequestBody Teacher teacher, HttpSession httpSession){
+        Teacher teacherDb = teacherRepository.findByUsername(teacher.getUsername());
 
-        System.out.println(teacherList);
-        /*for (Teacher teachers: teacherList
-             ) {
-            System.out.println(teachers.toString());
-        }*/
-        System.out.println(teacher.toString());
+        if(teacherDb == null) {
+            return HttpStatus.BAD_REQUEST;
+        }
 
-        httpSession.setAttribute("username", teacher.getUsername());
-        // Wenn Zeit noch übrig ist, schauen ob es nicht einfacher gemacht werden kann
+        StringBuilder sb = new StringBuilder();
         try {
+            // Apply hash to password.
             MessageDigest md = MessageDigest.getInstance("SHA-512");
             byte[] data = md.digest(teacher.getPassword().getBytes());
-            StringBuilder sb = new StringBuilder();
-            for(int i=0;i<data.length;i++) {
-                sb.append(Integer.toString((data[i] & 0xff) + 0x100, 16).substring(1));
-                httpSession.setAttribute("hashedpassword", sb);
+            for (byte datum : data) {
+                sb.append(Integer.toString((datum & 0xff) + 0x100, 16).substring(1));
             }
-            System.out.println(sb);
-
         } catch(Exception e) {
-            System.out.println(e);
+            return HttpStatus.EXPECTATION_FAILED;
         }
+
+        if(!sb.toString().equals(teacherDb.getPassword())) {
+            return HttpStatus.BAD_REQUEST;
+        }
+
+        httpSession.setAttribute("username", teacher.getUsername());
+        httpSession.setAttribute("hashedpassword", sb);
+
+        return HttpStatus.OK;
     }
 
     @GetMapping("/onlyteacher")
