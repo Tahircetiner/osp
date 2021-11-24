@@ -1,8 +1,10 @@
 package de.osp;
 
 import lombok.Data;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Data
@@ -10,6 +12,7 @@ import javax.persistence.Id;
 public class Student {
 
     @Id
+    @GeneratedValue
     private Integer id;
 
     private String surName;
