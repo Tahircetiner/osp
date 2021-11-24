@@ -11,6 +11,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
 import java.security.MessageDigest;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -65,8 +66,9 @@ public class LoginController {
         Validation validation = new Validation();
         ValidationMessage validationMessage = new ValidationMessage();
 
-        if(Boolean.FALSE.equals(validation.hasAllFieldsFilled(student))){
-            validationMessage.setMessage("Sie haben nicht alle Felder ausgefüllt. Bitte füllen Sie alle Felder aus und schicken Sie bitte das Formular erneut ab.");
+        List<Student> studentList = studentRepository.findAllBySurNameAndNameAndNumberAndCityAndStreetAndAgeAndEmailAddressAndGradeAndGradeTeacherAndSpecialNutritionAndPhysicalImpairmentAndIsOfLegalAgeAndEmergencyNumberAndEmergencyPerson(student.getSurName(), student.getName(), student.getNumber(), student.getCity(), student.getStreet(), student.getAge(), student.getEmailAddress(), student.getGrade(), student.getGradeTeacher(), student.getSpecialNutrition(), student.getPhysicalImpairment(), student.getIsOfLegalAge(), student.getEmergencyNumber(), student.getEmergencyPerson());
+        if(Boolean.FALSE.equals(validation.hasAllFieldsFilled(student)) || !studentList.isEmpty()){
+            validationMessage.setMessage("Sie haben entweder nicht alle Felder ausgefüllt oder Sie haben sich bereits registriert.");
         }
         else{
             validationMessage.setMessage("Sie haben sich erfolgreich an dem Austauschprogramm angemeldet." +
