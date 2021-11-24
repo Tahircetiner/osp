@@ -61,15 +61,4 @@ public class Validation {
         }
         return isFieldNotFilled;
     }
-
-    public Boolean doesStudentAlreadyExists(Student student){
-        Boolean isStudentInDatabase = false;
-        Iterator<Student> students = studentRepository.findAll().iterator();
-        while(students.hasNext()) {
-            if(students.next().equals(student)){
-                isStudentInDatabase = true;
-            }
-        }
-        return isStudentInDatabase;
-    }
 }

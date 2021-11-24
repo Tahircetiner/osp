@@ -3,6 +3,7 @@ package de.osp;
 import lombok.Data;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -10,6 +11,7 @@ import javax.persistence.Table;
 @Entity
 public class Teacher {
     @Id
+    @GeneratedValue
     private Long id;
 
     private String username;
