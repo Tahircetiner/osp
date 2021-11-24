@@ -1,5 +1,6 @@
 package de.osp;
 
+import de.osp.Service.Hasher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
 
@@ -24,41 +26,50 @@ public class LoginController {
 
     @PostMapping("/login")
     public HttpStatus authenticate(@RequestBody Teacher teacher, HttpSession httpSession){
+        System.out.println("Handle Login!");
         Teacher teacherDb = teacherRepository.findByUsername(teacher.getUsername());
 
         if(teacherDb == null) {
             return HttpStatus.BAD_REQUEST;
         }
-
-        StringBuilder sb = new StringBuilder();
+        String pwHash;
         try {
-            // Apply hash to password.
-            MessageDigest md = MessageDigest.getInstance("SHA-512");
-            byte[] data = md.digest(teacher.getPassword().getBytes());
-            for (byte datum : data) {
-                sb.append(Integer.toString((datum & 0xff) + 0x100, 16).substring(1));
-            }
+            pwHash = Hasher.hash(teacher.getPassword());
         } catch(Exception e) {
             return HttpStatus.EXPECTATION_FAILED;
         }
 
-        if(!sb.toString().equals(teacherDb.getPassword())) {
+        if(!pwHash.equals(teacherDb.getPassword())) {
             return HttpStatus.BAD_REQUEST;
         }
 
         httpSession.setAttribute("username", teacher.getUsername());
-        httpSession.setAttribute("hashedpassword", sb);
+        httpSession.setAttribute("hashedpassword", pwHash);
 
         return HttpStatus.OK;
     }
 
-    @GetMapping("/onlyteacher")
+    @GetMapping("/intern/overview")
     public HttpStatus allowOnlyTeacher(HttpSession httpSession){
-        if(httpSession.getAttribute("username").equals("tahir")){
-            return HttpStatus.OK;
-        }else{
-            return HttpStatus.METHOD_NOT_ALLOWED;
+        Object user = httpSession.getAttribute("username");
+        Object pw = httpSession.getAttribute("hashedpassword");
+        httpSession.removeAttribute("username");
+        httpSession.removeAttribute("hashedpassword");
+        System.out.println(user);
+        System.out.println(pw);
+
+        if(user != null && pw != null){
+            Teacher teacherDb = teacherRepository.findByUsername(user.toString());
+            try {
+                if(Hasher.hash(teacherDb.getPassword()) == pw) {
+                    return HttpStatus.OK;
+                }
+            } catch (NoSuchAlgorithmException e) {
+                return HttpStatus.EXPECTATION_FAILED;
+            }
         }
+
+        return HttpStatus.METHOD_NOT_ALLOWED;
     }
 
     @PostMapping("/saveStudent")
