@@ -73,7 +73,7 @@
                             <td>Notfallperson / Nummer</td>
                             <td>Beeinträchtiung / Ernährung</td>
                             <td>Status</td>
-                            <td></td>
+                            <td>Aktionen</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -133,7 +133,9 @@
         },
     });
     $(document).ready(function() {
-        $('#overview').DataTable();
+        $('#overview').DataTable({
+        "scrollX": true
+    });
     } );
 </script>
 </html>
