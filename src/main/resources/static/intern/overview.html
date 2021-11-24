@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GSO - DPJW Schüleraustausch</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css">
+    <script src="https://kit.fontawesome.com/6d593e72a9.js" crossorigin="anonymous"></script>
+
+    <style type="text/css">
+        #app{
+            display: flex;
+            justify-content: center;
+        }
+        body {
+            background: #e4e3e3;
+        }
+        .container {
+            background: white !important;
+        }
+        .angemeldet {
+            color: blue;
+        }
+        .unangemeldet {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="container mt-3 mb-3">
+        <div id="header mb-5">
+            <div class="row">
+                <div class="col-12 mb-3" style="background-color: #5b9bd5;">
+                    &nbsp;<br>&nbsp;
+                </div>
+            </div>
+            <div class="row">
+                 <div class="col-6 text-center">
+                    <a href="https://www.gso-koeln.de/" target="_blank"><img src="../GSO_neu.png" alt="My Image" height="100"/></a>
+                </div>
+                <div class="col-6 text-center">
+                    <a href="https://dpjw.org/" target="_blank"><img src="../dpjw.svg" alt="My Image"/></a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 text-center">
+                    <a href="#">Informationen</a> | <a href="#">Anmeldung</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h2>Administrationsübersicht - Alle Anmeldungen</h2>
+                <div class="alert alert-primary" role="alert">
+                    Auf dieser Seite können Sie alle Anmeldungen sehen. Über die Icons ganz rechts, können Sie eine Anmeldung löschen oder eine Anmeldung bestätigen.<br> Unter der Tabelle finden Sie Links zu den Bestätigungsdokumenten.
+                  </div>
+
+                <table id="overview" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <td>Vorname</td>
+                            <td>Nachname</td>
+                            <td>E-Mail</td>
+                            <td>Nummer</td>
+                            <td>Geburtsdatum</td>
+                            <td>Klasse</td>
+                            <td>Adresse</td>
+                            <td>Notfallperson / Nummer</td>
+                            <td>Beeinträchtiung / Ernährung</td>
+                            <td>Status</td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Andre</td>
+                            <td>Eberhardt</td>
+                            <td>andree@gso.schule.koeln</td>
+                            <td>0221 987654321</td>
+                            <td>17.07.1996</td>
+                            <td>FIA96</td>
+                            <td>Am Kölner Dom 5, 50996 Köln</td>
+                            <td>Papst Franziskus, 077 777 777 7</td>
+                            <td>Keine</td>
+                            <td class="angemeldet">Angemeldet</td>
+                            <td><a href="#"><i class="fas fa-user-minus"></i></a><a href="#"><i class="fas fa-user-edit"></i></a></td>
+                        </tr>
+                        <tr>
+                            <td>Sebastian</td>
+                            <td>Vettel</td>
+                            <td>andree@gso.schule.koeln</td>
+                            <td>0221 5156141</td>
+                            <td>17.04.1984</td>
+                            <td>FIA01</td>
+                            <td>Am Hockenheimring, 50xx Hockenheim</td>
+                            <td>Herr Eckelstones, 077 777 777 7</td>
+                            <td>Keine</td>
+                            <td class="unangemeldet">Unangemeldet</td>
+                            <td><a href="#"><i class="fas fa-user-minus"></i></a><a href="#"><i class="fas fa-user-edit"></i></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <a href="./docs/Rückerstattung.doc">Rückerstattung (DOCS)</a> | <a href="./docs/Bestätigung-Schüler.doc">Bestätigung-Schüler (DOCS)</a>
+            </div>
+        </div>
+        <div id="footer" class="text-center mb-3 mt-3 small">
+            <a href="#">Lehrer-Login</a>
+        </div>
+    </div>
+</div>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap5.min.js"></script>
+<script>
+    var app = new Vue({
+        el: '#app',
+    });
+    $(document).ready(function() {
+        $('#overview').DataTable();
+    } );
+</script>
+</html>
