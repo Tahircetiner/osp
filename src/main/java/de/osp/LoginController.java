@@ -51,6 +51,8 @@ public class LoginController {
 
     @PostMapping("/saveStudent")
     public HttpStatus saveStudentInformation(@RequestBody Student student){
+        // TODO: test for login
+
         //KOMPLETTE LOGIK FEHLT NOCH
         studentRepository.save(student);
         return null;
