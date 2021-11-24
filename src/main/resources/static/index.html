@@ -44,19 +44,60 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-4 mb-4">
-                <form>
-                    <div class="mb-3">
-                      <label for="loginInformation.username" class="form-label">Username</label>
-                      <input v-model="loginInformation.username" type="text" class="form-control" id="loginInformation.username" placeholder="Usernamen eingeben">
+            <div class="col-4 mb-4 mt-4">
+                <div class="card">
+                    <div class="card-header">
+                        Wer fördert diese Begegnung ideell und finanziell?
                     </div>
-                    <div class="mb-3">
-                      <label for="loginInformation.password" class="form-label">Password</label>
-                      <input v-model="loginInformation.password" type="password" class="form-control" id="loginInformation.password" placeholder="Passwort eingeben">
+                    <div class="card-body">
+                        <p class="card-text">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"></li>
+                                <li class="list-group-item"></li>
+                                <li class="list-group-item"></li>
+                            </ul>
+                        </p>
                     </div>
-                    <button v-on:click="sendData();" class="btn btn-primary">Anmelden</button>
-                  </form>
+
+                </div>
             </div>
+            <div class="col-8 mb-4 mt-4">
+                <div class="card">
+                    <div class="card-header">
+                      Schulpartnerschaft Köln-Warschau
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            <i><u>Wie kam die Partnerschaft zustande?</u></i><br>
+                            In den politischen Umwälzungen seit 1989 öffnete sich der „eiserne Vorhang“, der Europa von Norden nach Süden trennte. In dieser veränderten politischen Lage suchte eine Warschauer Kollegin, Jadwiga Smirnow, Kontakt zu einer deutschen Schule und fand die Georg-Simon-Ohm- Schule. Seitdem besuchen wir uns jedes Jahr gegenseitig und organisieren so einen Austausch mit Schülerinnen und Schülern sowie Lehrerinnen und Lehrern.
+                            <br><br>
+                            <i><u>Wie bereiten wir auf den Austausch vor?</u></i><br>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Informationsveranstaltungen in unterschiedlichen Schulklassen und Bildungsgängen mit Präsentation von Bildern und Filmen vergangener Austausche</li>
+                                <li class="list-group-item">Es findet immer ein Vorbereitungsseminar statt: Deutsch-polnische Geschichte und Beziehungen, Ethikcodex für die Gruppe, reisepraktische Fragen…</li>
+                                <li class="list-group-item">Gemeinsame Programmgestaltung mit polnischer Seite</li>
+                            </ul>
+                            <br>
+                            <u><i>Welche Ziele streben wir an?</i></u>
+                            <ul>
+                                <li>Aus ehemaligen Feinden werden Freunde</li>
+                                <li>Wir bauen nicht mehr zeitgemäße Vorurteile auf beiden Seiten ab und tragen vertrauensbildend zu einer neuen europäischen Partnerschaft bei</li>
+                                <li>Wir geben bilaterale Einblicke in das Verständnis von „Land und Leuten“</li>
+                                <li>Unterrichtsbesuche und Hospitationen an der Partnerschule</li>
+                                <li>Kontaktaufnahme mit polnischen Unternehmen zur Vermittlung von Schülerpraktika</li>
+                                <li>Wir eröffnen Begegnungsräume unter jungen Polen und Deutschen: Die jungen Menschen aus beiden Ländern organisieren wichtige Programmpunkte eigenverantwortlich</li>
+                                <li>Wir führen in die zwischenstaatlichen deutsch-polnischen Beziehungen ein</li>
+                                <li>Wir bringen Geschichte zur Sprache, weil wir die Überzeugung haben, dass wir nur so Anknüpfungen für das zukünftige Verhältnis junger Deutscher und Polen in Europa finden werden</li>
+                                <li>Wir öffnen Wege, damit junge Menschen die gewonnenen Kontakte und Freundschaften erhalten und pflegen</li>
+                            </ul>
+                        </p>
+                      <a href="#" class="btn btn-primary">Du willst mit? Melde dich an!</a>
+                    </div>
+                  </div>
+            </div>
+        </div>
+        <div id="footer" class="text-center mb-3 mt-3 small">
+            <a href="#">Lehrer-Login</a>
         </div>
     </div>
 </div>
@@ -65,19 +106,6 @@
 <script>
     var app = new Vue({
         el: '#app',
-        data: {
-            loginInformation:{
-                username: '',
-                password: ''
-            }
-
-        },
-        methods:{
-            sendData: function (){
-                console.log(this.loginInformation);
-                axios.post("/login",this.loginInformation)
-            }
-        }
     })
 </script>
 </html>
