@@ -48,12 +48,17 @@ public class LoginController {
     }
 
     @PostMapping("/saveStudent")
-    public String saveStudentInformation(@RequestBody Student student){
+    public ValidationMessage saveStudentInformation(@RequestBody Student student){
+
         Validation validation = new Validation();
-        if(!validation.hasAllFieldsFilled(student)){
-            return new String("es wurden nicht alle felder ausgefüllt");
+        ValidationMessage validationMessage = new ValidationMessage();
+        if(Boolean.FALSE.equals(validation.hasAllFieldsFilled(student))){
+            validationMessage.setMessage("es wurden nicht alle felder ausgefüllt");
         }
-        studentRepository.save(student);
-        return null;
+        else{
+            validationMessage.setMessage("du hattest erfolg");
+            studentRepository.save(student);
+        }
+        return validationMessage;
     }
 }
