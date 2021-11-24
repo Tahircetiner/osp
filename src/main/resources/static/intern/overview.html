@@ -122,6 +122,15 @@
 <script>
     var app = new Vue({
         el: '#app',
+        data () {
+            return {
+                info: null
+            }
+        },
+        mounted () {
+            axios
+                .get('/adminDataAll').then(response => (this.info = response))
+        },
     });
     $(document).ready(function() {
         $('#overview').DataTable();
