@@ -36,7 +36,6 @@ public class LoginController {
         } catch(Exception e) {
             System.out.println(e);
         }
-
     }
 
     @GetMapping("/onlyteacher")
@@ -46,15 +45,15 @@ public class LoginController {
         }else{
             return HttpStatus.METHOD_NOT_ALLOWED;
         }
-
     }
 
     @PostMapping("/saveStudent")
-    public HttpStatus saveStudentInformation(@RequestBody Student student){
-        //KOMPLETTE LOGIK FEHLT NOCH
+    public String saveStudentInformation(@RequestBody Student student){
+        Validation validation = new Validation();
+        if(!validation.hasAllFieldsFilled(student)){
+            return new String("es wurden nicht alle felder ausgefüllt");
+        }
         studentRepository.save(student);
         return null;
     }
-
-
 }
