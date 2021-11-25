@@ -61,12 +61,12 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label for="formularInformation.Name" class="form-label">Name</label>
-                            <input v-model="formularInformation.surName" type="text" class="form-control"
+                            <input v-model="formularInformation.name" type="text" class="form-control"
                                    id="formularInformation.Name" placeholder="Nachname" required>
                         </div>
                         <div class="col-md-6">
                             <label for="formularInformation.Vorname" class="form-label">Vorname</label>
-                            <input v-model="formularInformation.name" type="text" class="form-control"
+                            <input v-model="formularInformation.surName" type="text" class="form-control"
                                    id="formularInformation.Vorname" placeholder="Vorname" required>
                         </div>
                         <div class="col-md-6">
@@ -76,24 +76,16 @@
                             <p style="color:red;">{{this.formularInformation.isOfLegalAge && this.formularInformation.age != '' ? '' : 'Du bist nicht volljährig.'}}</p>
                         </div>
                         <div class="col-md-6">
-                            <label for="formularInformation.Straße" class="form-label">Straße</label>
+                            <label for="formularInformation.Straße" class="form-label">Straße und Hausnummer</label>
                             <input v-model="formularInformation.street" type="text" class="form-control"
-                                   id="formularInformation.Straße" placeholder="Straße" required>
+                                   id="formularInformation.Straße" placeholder="Straße und Hausnummer" required>
                         </div>
+
+
                         <div class="col-md-6">
-                            <label for="formularInformation.Hausnummer" class="form-label">Hausnummer</label>
-                            <input type="text" class="form-control"
-                                id="formularInformation.Hausnummer" placeholder="Hausnummer" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="formularInformation.Posleitzahl" class="form-label">Postleitzahl</label>
-                            <input type="text" class="form-control"
-                                id="formularInformation.Posleitzahl" placeholder="Postleitzahl" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="formularInformation.Wohnort" class="form-label">Wohnort</label>
-                            <input type="text" class="form-control"
-                                id="formularInformation.Wohnort" placeholder="Wohnort" required>
+                            <label for="formularInformation.Posleitzahl" class="form-label">Wohnort und Postleitzahl</label>
+                            <input v-model="formularInformation.city" type="text" class="form-control"
+                                id="formularInformation.Posleitzahl" placeholder="Wohnort und Postleitzahl" required>
                         </div>
                         <div class="col-md-6">
                             <label for="formularInformation.Mobilfunknummer" class="form-label">Mobilfunknummer</label>
@@ -110,6 +102,13 @@
                             <input v-model="formularInformation.grade" type="text" class="form-control"
                                    id="formularInformation.Klasse" placeholder="Klasse des Schülers" required>
                         </div>
+
+                        <div class="col-md-6">
+                            <label for="formularInformation.Klassenlehrer" class="form-label">Klassenlehrer</label>
+                            <input v-model="formularInformation.gradeTeacher" type="text" class="form-control"
+                                   id="formularInformation.Klassenlehrer" placeholder="Klassenlehrer" required>
+                        </div>
+                        <br>
                         <div class="col-md-6">
                             <label for="formularInformation.BesondereErnährung" class="form-label">Besondere
                                 Ernährung</label>
