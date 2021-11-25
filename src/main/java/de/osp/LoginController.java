@@ -1,64 +1,107 @@
 package de.osp;
-
+import de.osp.Service.Hasher;
+import org.apache.coyote.Request;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpRequest;
+import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.security.MessageDigest;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 
 @RestController
 public class LoginController {
 
     @Autowired
     private StudentRepository studentRepository;
+
     @Autowired
     private TeacherRepository teacherRepository;
 
+    //private HttpSession globalHttpSession;
+
     @PostMapping("/login")
-    public HttpStatus authenticate(@RequestBody Teacher teacher, HttpSession httpSession){
+    public ValidationMessage authenticate(@RequestBody Teacher teacher, HttpServletRequest httpServletRequest) throws IOException, InterruptedException {
+        System.out.println("Handle Login!");
         Teacher teacherDb = teacherRepository.findByUsername(teacher.getUsername());
-
+        ValidationMessage validationMessage = new ValidationMessage();
+        httpServletRequest.getSession(true);
         if(teacherDb == null) {
-            return HttpStatus.BAD_REQUEST;
+            validationMessage.setMessage("bla");
         }
-
-        StringBuilder sb = new StringBuilder();
+        String pwHash = "";
         try {
-            // Apply hash to password.
-            MessageDigest md = MessageDigest.getInstance("SHA-512");
-            byte[] data = md.digest(teacher.getPassword().getBytes());
-            for (byte datum : data) {
-                sb.append(Integer.toString((datum & 0xff) + 0x100, 16).substring(1));
-            }
+            pwHash = Hasher.hash(teacher.getPassword());
         } catch(Exception e) {
-            return HttpStatus.EXPECTATION_FAILED;
+            e.printStackTrace();
         }
 
-        if(!sb.toString().equals(teacherDb.getPassword())) {
-            return HttpStatus.BAD_REQUEST;
+        if(!pwHash.equals(teacherDb.getPassword())) {
+            //validationMessage.setMessage("blubb");
+        }
+        else{
+            validationMessage.setMessage("erfolg");
         }
 
-        httpSession.setAttribute("username", teacher.getUsername());
-        httpSession.setAttribute("hashedpassword", sb);
-
-        return HttpStatus.OK;
+        httpServletRequest.setAttribute("username", teacher.getUsername());
+        httpServletRequest.setAttribute("hashedpassword", pwHash);
+        System.out.println("session" + httpServletRequest.getAttribute("username"));
+        return validationMessage;
     }
 
-    @GetMapping("/onlyteacher")
-    public HttpStatus allowOnlyTeacher(HttpSession httpSession){
-        if(httpSession.getAttribute("username").equals("tahir")){
-            return HttpStatus.OK;
-        }else{
-            return HttpStatus.METHOD_NOT_ALLOWED;
+    @Async
+    @GetMapping("/intern/overview.html")
+    public void allowOnlyTeacher(HttpSession httpSession, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws NoSuchAlgorithmException, IOException, InterruptedException {
+        //Hier existiert irgendein Problem mit der Session
+        System.out.println("cookies"  +httpServletRequest.getCookies());
+        Boolean isGlobalSessionNull = Objects.isNull(httpSession);
+        Object user = null;
+        Object pw = null;
+        if(!isGlobalSessionNull){
+            user = httpSession.getAttribute("username");
+            pw = httpSession.getAttribute("hashedpassword");
         }
+        else{
+            httpSession.invalidate();
+            System.out.println(httpServletRequest.getSession());
+        }
+        ResponseEntity<String> bodyBuilder = null;
+        if(user != null && pw != null){
+            Teacher teacherDb = teacherRepository.findByUsername(user.toString());
+            System.out.println(!(Hasher.hash(teacherDb.getPassword()).equals(pw)));
+            if(!(Hasher.hash(teacherDb.getPassword()).equals(pw))) {
+                System.out.println("redirecting");
+                String overViewPage = new String(Files.readAllBytes(Paths.get("C://Projekte//Schulprojekte//osp//src//main//resources//static//intern//overview" + ".html")), "UTF-8");
+                PrintWriter printWriter = httpServletResponse.getWriter();
+                printWriter.println(overViewPage);
+                printWriter.flush();
+                //bodyBuilder = ResponseEntity.ok().body(overViewPage);
+            }
+
+        }
+        else{
+            System.out.println("else");
+            httpServletResponse.setHeader("Location", "http://localhost:8080/");
+            httpServletResponse.setStatus(302);
+            httpServletResponse.setContentType("text/html");
+            PrintWriter out = httpServletResponse.getWriter();
+            String homePage = new String(Files.readAllBytes(Paths.get("C://Projekte//Schulprojekte//osp//src//main//resources//static//index" + ".html")), "UTF-8");
+            out.println(homePage);
+            //bodyBuilder = ResponseEntity.ok().body(homePage);
+        }
+        //return bodyBuilder;
     }
 
     @PostMapping("/saveStudent")
