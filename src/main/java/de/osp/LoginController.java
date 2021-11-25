@@ -90,7 +90,7 @@ public class LoginController {
     }
 
     @GetMapping("/adminDataAll")
-    public Iterable<Student> s(){
+    public Iterable<Student> getAllStudents(){
         return studentRepository.findAll();
     }
 
