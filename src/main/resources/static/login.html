@@ -55,9 +55,9 @@
                       <input v-model="loginInformation.password" type="password" class="form-control" id="loginInformation.password" placeholder="Passwort eingeben" required>
                     </div>
                     <button v-on:click="sendData();" class="btn btn-primary">Anmelden</button>
-
             </div>
         </div>
+        <p style="color:red;">{{!isAuthenticated ? this.message: ''}}</p>
         <div id="footer" class="text-center mb-3 mt-3 small">
             <a href="#">Lehrer-Login</a>
         </div>
@@ -73,20 +73,25 @@
                 username: '',
                 password: ''
             },
-            message: ""
-
+            message: "",
+            isAuthenticated: false
+        },
+        mounted() {
+            axios.get("http://localhost:8080/generateSession");
         },
         methods:{
             sendData: function (){
-                //console.log(this.loginInformation);
-                new Promise(axios.post("/login",this.loginInformation).then(response => this.message = response.data.message).then(window.location.href = "http://localhost:8080/intern/overview.html"))
-                console.log(this.message);
-                if(this.message === "erfolg"){
-
-                }
-                else{
-                    console.log("not redirecting");
-                }
+                axios.post('/login', this.loginInformation)
+                    .then((response) => {
+                        console.log(response);
+                        this.message = response.data.message;
+                        if(this.message === "Username und Passwort ist richtig."){
+                            this.isAuthenticated = true;
+                            window.location.href = "http://localhost:8080/intern/overview";
+                        }
+                    }, (error) => {
+                        console.log(error);
+                    });
             },
         }
     })
