@@ -2,21 +2,17 @@ package de.osp;
 import de.osp.Service.Hasher;
 import org.apache.coyote.Request;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.annotation.SessionScope;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Objects;
@@ -30,17 +26,18 @@ public class LoginController {
     @Autowired
     private TeacherRepository teacherRepository;
 
-    //private HttpSession globalHttpSession;
+    @GetMapping("/generateSession")
+    public ValidationMessage setSession(HttpServletRequest httpServletRequest ,HttpSession httpSession){
+        httpSession = httpServletRequest.getSession(false);
+        return new ValidationMessage();
+    }
 
     @PostMapping("/login")
-    public ValidationMessage authenticate(@RequestBody Teacher teacher, HttpServletRequest httpServletRequest) throws IOException, InterruptedException {
-        System.out.println("Handle Login!");
+    public ValidationMessage authenticate(@RequestBody Teacher teacher, HttpSession httpSession, HttpServletRequest httpServletRequest) throws IOException, InterruptedException {
         Teacher teacherDb = teacherRepository.findByUsername(teacher.getUsername());
         ValidationMessage validationMessage = new ValidationMessage();
-        httpServletRequest.getSession(true);
-        if(teacherDb == null) {
-            validationMessage.setMessage("bla");
-        }
+
+        httpSession = httpServletRequest.getSession(false);
         String pwHash = "";
         try {
             pwHash = Hasher.hash(teacher.getPassword());
@@ -48,60 +45,48 @@ public class LoginController {
             e.printStackTrace();
         }
 
-        if(!pwHash.equals(teacherDb.getPassword())) {
-            //validationMessage.setMessage("blubb");
+        if(teacherDb != null){
+            if(!pwHash.equals(teacherDb.getPassword())) {
+                validationMessage.setMessage("Username oder Passwort ist falsch");
+            }
+            else{
+                validationMessage.setMessage("Username und Passwort ist richtig.");
+            }
         }
-        else{
-            validationMessage.setMessage("erfolg");
-        }
-
-        httpServletRequest.setAttribute("username", teacher.getUsername());
-        httpServletRequest.setAttribute("hashedpassword", pwHash);
-        System.out.println("session" + httpServletRequest.getAttribute("username"));
+        httpSession.setAttribute("username", teacher.getUsername());
+        httpSession.setAttribute("hashedpassword", pwHash);
         return validationMessage;
     }
 
-    @Async
-    @GetMapping("/intern/overview.html")
-    public void allowOnlyTeacher(HttpSession httpSession, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws NoSuchAlgorithmException, IOException, InterruptedException {
-        //Hier existiert irgendein Problem mit der Session
-        System.out.println("cookies"  +httpServletRequest.getCookies());
+    @RequestMapping(method = RequestMethod.GET, value = "/intern/overview")
+    @ResponseBody
+    public ModelAndView getOverviewPage(HttpSession httpSession, HttpServletRequest httpServletRequest) throws NoSuchAlgorithmException, IOException, InterruptedException {
+        Thread.sleep(1500);
         Boolean isGlobalSessionNull = Objects.isNull(httpSession);
         Object user = null;
         Object pw = null;
+        ModelAndView modelAndView = new ModelAndView();
         if(!isGlobalSessionNull){
             user = httpSession.getAttribute("username");
             pw = httpSession.getAttribute("hashedpassword");
         }
-        else{
-            httpSession.invalidate();
-            System.out.println(httpServletRequest.getSession());
-        }
-        ResponseEntity<String> bodyBuilder = null;
         if(user != null && pw != null){
             Teacher teacherDb = teacherRepository.findByUsername(user.toString());
-            System.out.println(!(Hasher.hash(teacherDb.getPassword()).equals(pw)));
             if(!(Hasher.hash(teacherDb.getPassword()).equals(pw))) {
-                System.out.println("redirecting");
-                String overViewPage = new String(Files.readAllBytes(Paths.get("C://Projekte//Schulprojekte//osp//src//main//resources//static//intern//overview" + ".html")), "UTF-8");
-                PrintWriter printWriter = httpServletResponse.getWriter();
-                printWriter.println(overViewPage);
-                printWriter.flush();
-                //bodyBuilder = ResponseEntity.ok().body(overViewPage);
+                modelAndView.setViewName("overview");
+                return modelAndView;
             }
-
         }
         else{
-            System.out.println("else");
-            httpServletResponse.setHeader("Location", "http://localhost:8080/");
-            httpServletResponse.setStatus(302);
-            httpServletResponse.setContentType("text/html");
-            PrintWriter out = httpServletResponse.getWriter();
-            String homePage = new String(Files.readAllBytes(Paths.get("C://Projekte//Schulprojekte//osp//src//main//resources//static//index" + ".html")), "UTF-8");
-            out.println(homePage);
-            //bodyBuilder = ResponseEntity.ok().body(homePage);
+            modelAndView.setViewName("index");
+            return modelAndView;
         }
-        //return bodyBuilder;
+        return modelAndView;
+    }
+
+    @GetMapping("/adminDataAll")
+    public Iterable<Student> s(){
+        return studentRepository.findAll();
     }
 
     @PostMapping("/saveStudent")
