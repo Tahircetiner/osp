@@ -45,7 +45,7 @@
         </div>
         <div class="row">
             <div class="col-12 mb-4">
-                <form>
+
                     <div class="mb-3">
                       <label for="loginInformation.username" class="form-label">Username</label>
                       <input v-model="loginInformation.username" type="text" class="form-control" id="loginInformation.username" placeholder="Usernamen eingeben">
@@ -55,7 +55,7 @@
                       <input v-model="loginInformation.password" type="password" class="form-control" id="loginInformation.password" placeholder="Passwort eingeben">
                     </div>
                     <button v-on:click="sendData();" class="btn btn-primary">Anmelden</button>
-                  </form>
+
             </div>
         </div>
         <div id="footer" class="text-center mb-3 mt-3 small">
@@ -72,14 +72,22 @@
             loginInformation:{
                 username: '',
                 password: ''
-            }
+            },
+            message: ""
 
         },
         methods:{
             sendData: function (){
-                console.log(this.loginInformation);
-                axios.post("/login",this.loginInformation)
-            }
+                //console.log(this.loginInformation);
+                new Promise(axios.post("/login",this.loginInformation).then(response => this.message = response.data.message).then(window.location.href = "http://localhost:8080/intern/overview.html"))
+                console.log(this.message);
+                if(this.message === "erfolg"){
+
+                }
+                else{
+                    console.log("not redirecting");
+                }
+            },
         }
     })
 </script>
