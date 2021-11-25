@@ -52,7 +52,8 @@
                 </div>
             </div>
             <hr>
-            <div class="row mt-3">
+            <h1 v-show="isRegistered">{{message}}</h1>
+            <div class="row mt-3" v-show="!isRegistered">
                 <div class="col-2"></div>
                 <div id="formData" class="col-8 mb-4">
                     <div class="alert alert-primary" role="alert">
@@ -135,6 +136,7 @@
                             <input v-model="formularInformation.emergencyNumber" type="text"
                                    class="form-control" id="formularInformation.AnsprechpartnerMobilfunknummer" placeholder="Mobilfunknummer beginnen mit +49" required>
                         </div>
+                        <p>{{message}}</p>
                         <div class="col-12">
                             <button v-on:click="sendData();" class="btn btn-primary" id="formular">Schüler anmelden</button>
                         </div>
@@ -142,6 +144,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 
 </body>
@@ -165,12 +168,30 @@
                 emergencyNumber: '',
                 status: false,
                 isOfLegalAge: false
-            }
+            },
+            message: '',
+            isRegistered: false
+        },
+        mounted(){
+            this.isRegistered = false;
         },
         methods: {
             sendData: function () {
                 console.log(this.formularInformation);
-                axios.post("/formular", this.formularInformation);
+                axios.post('/formular', this.formularInformation)
+                    .then((response) => {
+                        console.log(response);
+                        this.message = response.data.message;
+                        if(this.message == "Sie haben sich erfolgreich an dem Austauschprogramm angemeldet. Bitte wenden Sie sich an ihren zuständigen Lehrer mit ihrem ausgefüllten Anmeldeformular."){
+                            this.isRegistered = true;
+                            window.location.href = "http://localhost:8080/download";
+                        }
+                        else{
+                            this.isRegistered = false;
+                        }
+                    }, (error) => {
+                        console.log(error);
+                    });
             },
             checkIsLegalOfAge: function (){
                 var today = new Date();
