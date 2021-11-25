@@ -16,5 +16,4 @@ public class UserDatabaseApplication {
         SpringApplication.run(UserDatabaseApplication.class, args);
         XWPFDocument document = new XWPFDocument(OPCPackage.open("template.docx"));
     }
-
 }
