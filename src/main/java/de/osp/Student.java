@@ -16,10 +16,13 @@ public class Student {
 
     private String surName;
     private String name;
+
     private String number;
     private String city;
+
     private String street;
     private String age;
+
     private Boolean status;
     private String emailAddress;
 
