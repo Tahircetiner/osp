@@ -7,6 +7,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xwpf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.swing.text.StyledEditorKit;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
@@ -15,28 +16,31 @@ import java.util.List;
      @Autowired
      StudentRepository studentRepository;
 
-     public void erstelleAnmeldungAlsWordDokument(){
+     public void erstelleAnmeldungAlsWordDokument(String name, String birthDate, String city, String emailAddress, String emergencyNumber,String emergencyPerson,
+                                                  String grade, String gradeTeacher, Boolean isLegalOfAge,
+                                                  String number, String physicalImpairment, String specialNutrition, Boolean status, String street,
+                                                  String surName){
 
-         ersetzePlaceHolderInWordDokument("PLACEHOLDER_NAME", wertAusDatenbank);
-         ersetzePlaceHolderInWordDokument("PLACEHOLDER_BIRTHDATE", wertAusDerDatenBank);
-         ersetzePlaceHolderInWordDokument("PLACEHOLDER_CITY", wertAusDerDatenBank);
-         ersetzePlaceHolderInWordDokument("PLACEHOLDER_EMAIL", wertAusDerDatenBank);
-         ersetzePlaceHolderInWordDokument("PLACEHOLDER_EMERGENCYNUMBER", wertAusDerDatenBank);
-         ersetzePlaceHolderInWordDokument("PLACEHOLDER_EMERGENCYPERSON", wertAusDerDatenBank);
-         ersetzePlaceHolderInWordDokument("PLACEHOLDER_GRADE", wertAusDerDatenBank);
-         ersetzePlaceHolderInWordDokument("PLACEHOLDER_GRADETEACHER", wertAusDerDatenBank);
-         ersetzePlaceHolderInWordDokument("PLACEHOLDER_ISOFAGE", wertAusDerDatenBank);
-         ersetzePlaceHolderInWordDokument("PLACEHOLDER_NUMBER", wertAusDerDatenBank);
-         ersetzePlaceHolderInWordDokument("PLACEHOLDER_PHYSICALIMPAIRMENT", wertAusDerDatenBank);
-         ersetzePlaceHolderInWordDokument("PLACEHOLDER_SPECIALNUTRITION", wertAusDerDatenBank);
-         ersetzePlaceHolderInWordDokument("PLACEHOLDER_STATUS", wertAusDerDatenBank);
-         ersetzePlaceHolderInWordDokument("PLACEHOLDER_STREET", wertAusDerDatenBank);
-         ersetzePlaceHolderInWordDokument("PLACEHOLDER_SURNAME", wertAusDerDatenBank);
+         ersetzePlaceHolderInWordDokument("PLACEHOLDER_NAME", name);
+         ersetzePlaceHolderInWordDokument("PLACEHOLDER_BIRTHDATE", birthDate);
+         ersetzePlaceHolderInWordDokument("PLACEHOLDER_CITY", city);
+         ersetzePlaceHolderInWordDokument("PLACEHOLDER_EMAIL", emailAddress);
+         ersetzePlaceHolderInWordDokument("PLACEHOLDER_EMERGENCYNUMBER", emergencyNumber);
+         ersetzePlaceHolderInWordDokument("PLACEHOLDER_EMERGENCYPERSON", emergencyPerson);
+         ersetzePlaceHolderInWordDokument("PLACEHOLDER_GRADE", grade);
+         ersetzePlaceHolderInWordDokument("PLACEHOLDER_GRADETEACHER", gradeTeacher);
+         ersetzePlaceHolderInWordDokument("PLACEHOLDER_ISOFAGE", Boolean.toString(isLegalOfAge));
+         ersetzePlaceHolderInWordDokument("PLACEHOLDER_NUMBER", number);
+         ersetzePlaceHolderInWordDokument("PLACEHOLDER_PHYSICALIMPAIRMENT", physicalImpairment);
+         ersetzePlaceHolderInWordDokument("PLACEHOLDER_SPECIALNUTRITION", specialNutrition);
+         ersetzePlaceHolderInWordDokument("PLACEHOLDER_STATUS", Boolean.toString(status));
+         ersetzePlaceHolderInWordDokument("PLACEHOLDER_STREET", street);
+         ersetzePlaceHolderInWordDokument("PLACEHOLDER_SURNAME", surName);
      }
 
-     private static void ersetzePlaceHolderInWordDokument(String artDesPlaceHolders) {
+     private static void ersetzePlaceHolderInWordDokument(String artDesPlaceHolders, String wertAusDerDatenbank) {
          try {
-             XWPFDocument doc = new XWPFDocument(OPCPackage.open("C:\\Users\\Patrick\\Patricks Dateien\\Schule GSO\\Oberstufenprojekt\\Projekt_git\\osp\\src\\main\\resources\\static\\intern\\docs\\Anmeldeformular 2022.docx"));
+             XWPFDocument doc = new XWPFDocument(OPCPackage.open("C:\\Projekte\\Schulprojekte\\osp\\src\\main\\resources\\static\\intern\\docs\\Anmeldeformular 2022.docx"));
              for (XWPFParagraph p : doc.getParagraphs()) {
                  List<XWPFRun> runs = p.getRuns();
                  if (runs != null) {

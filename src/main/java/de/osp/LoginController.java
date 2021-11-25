@@ -3,7 +3,9 @@ import de.osp.Service.Hasher;
 import org.apache.coyote.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,9 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Objects;
@@ -89,20 +94,39 @@ public class LoginController {
         return studentRepository.findAll();
     }
 
-    @PostMapping("/saveStudent")
-    public ValidationMessage saveStudentInformation(@RequestBody Student student){
+
+
+    @PostMapping("/formular")
+    public ResponseEntity<byte[]> saveStudentInformation(@RequestBody Student student){
         Validation validation = new Validation();
         ValidationMessage validationMessage = new ValidationMessage();
-
+        WordDateiService wordDateiService = new WordDateiService();
         List<Student> studentList = studentRepository.findAllBySurNameAndNameAndNumberAndCityAndStreetAndAgeAndEmailAddressAndGradeAndGradeTeacherAndSpecialNutritionAndPhysicalImpairmentAndIsOfLegalAgeAndEmergencyNumberAndEmergencyPerson(student.getSurName(), student.getName(), student.getNumber(), student.getCity(), student.getStreet(), student.getAge(), student.getEmailAddress(), student.getGrade(), student.getGradeTeacher(), student.getSpecialNutrition(), student.getPhysicalImpairment(), student.getIsOfLegalAge(), student.getEmergencyNumber(), student.getEmergencyPerson());
         if(Boolean.FALSE.equals(validation.hasAllFieldsFilled(student)) || !studentList.isEmpty()){
             validationMessage.setMessage("Sie haben entweder nicht alle Felder ausgefüllt oder Sie haben sich bereits registriert.");
+            new ResponseEntity<byte[]>(HttpStatus.BAD_REQUEST);
         }
         else{
+            wordDateiService.erstelleAnmeldungAlsWordDokument(student.getName(), student.getAge(), student.getCity(), student.getEmailAddress(),
+                    student.getEmergencyNumber(), student.getEmergencyPerson(),student.getGrade(), student.getGradeTeacher(),
+                    student.getIsOfLegalAge(), student.getNumber(), student.getPhysicalImpairment(),
+                    student.getSpecialNutrition(), student.getStatus(), student.getStreet(), student.getSurName());
+
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("content-disposition", "attachment; filename=" + "docx");
+            Path path = Paths.get("C:\\Projekte\\Schulprojekte\\osp\\src\\main\\resources\\static\\intern\\docs\\Anmeldeformular 2022.docx");
+            byte[] wordContent = null;
+            try {
+                wordContent = Files.readAllBytes(path);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             validationMessage.setMessage("Sie haben sich erfolgreich an dem Austauschprogramm angemeldet." +
                     " Bitte wenden Sie sich an ihren zuständigen Lehrer mit ihrem ausgefüllten Anmeldeformular.");
             studentRepository.save(student);
+            return new ResponseEntity<byte[]>(wordContent, headers, HttpStatus.OK);
         }
-        return validationMessage;
+        return null;
     }
 }

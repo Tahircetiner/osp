@@ -58,7 +58,7 @@
                     <div class="alert alert-primary" role="alert">
                         Hier können sich Schüler für das Austauschprogramm anmelden.
                       </div>
-                    <form v-on:submit.prevent="onSubmit" class="row g-3">
+                    <div class="row g-3">
                         <div class="col-md-6">
                             <label for="formularInformation.Name" class="form-label">Name</label>
                             <input v-model="formularInformation.surName" type="text" class="form-control"
@@ -82,17 +82,17 @@
                         </div>
                         <div class="col-md-6">
                             <label for="formularInformation.Hausnummer" class="form-label">Hausnummer</label>
-                            <input v-model="formularInformation.Hausnummer" type="text" class="form-control"
+                            <input type="text" class="form-control"
                                 id="formularInformation.Hausnummer" placeholder="Hausnummer" required>
                         </div>
                         <div class="col-md-6">
                             <label for="formularInformation.Posleitzahl" class="form-label">Postleitzahl</label>
-                            <input v-model="formularInformation.Posleitzahl" type="text" class="form-control"
+                            <input type="text" class="form-control"
                                 id="formularInformation.Posleitzahl" placeholder="Postleitzahl" required>
                         </div>
                         <div class="col-md-6">
                             <label for="formularInformation.Wohnort" class="form-label">Wohnort</label>
-                            <input v-model="formularInformation.Wohnort" type="text" class="form-control"
+                            <input type="text" class="form-control"
                                 id="formularInformation.Wohnort" placeholder="Wohnort" required>
                         </div>
                         <div class="col-md-6">
@@ -139,7 +139,7 @@
                         <div class="col-12">
                             <button v-on:click="sendData();" class="btn btn-primary" id="formular">Schüler anmelden</button>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>

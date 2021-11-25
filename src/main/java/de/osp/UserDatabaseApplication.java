@@ -14,6 +14,6 @@ import java.io.IOException;
 public class UserDatabaseApplication {
     public static void main(String[] args) throws InvalidFormatException, IOException {
         SpringApplication.run(UserDatabaseApplication.class, args);
-        XWPFDocument document = new XWPFDocument(OPCPackage.open("template.docx"));
+        //XWPFDocument document = new XWPFDocument(OPCPackage.open("template.docx"));
     }
 }
