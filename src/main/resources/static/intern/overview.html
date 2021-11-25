@@ -77,30 +77,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Andre</td>
-                            <td>Eberhardt</td>
-                            <td>andree@gso.schule.koeln</td>
-                            <td>0221 987654321</td>
-                            <td>17.07.1996</td>
-                            <td>FIA96</td>
+
+                        <tr v-for="student in info">
+                            <td>{{ student.surName }}</td>
+                            <td>{{ student.name }}</td>
+                            <td>{{ student.emailAddress }}</td>
+                            <td>{{ student.number }}</td>
+                            <td>{{ student.age }}</td>
+                            <td>{{ student.grade }}</td>
                             <td>Am Kölner Dom 5, 50996 Köln</td>
-                            <td>Papst Franziskus, 077 777 777 7</td>
-                            <td>Keine</td>
-                            <td class="angemeldet">Angemeldet</td>
-                            <td><a href="#"><i class="fas fa-user-minus"></i></a> | <a href="#"><i class="fas fa-user-edit"></i></a></td>
-                        </tr>
-                        <tr>
-                            <td>Sebastian</td>
-                            <td>Vettel</td>
-                            <td>andree@gso.schule.koeln</td>
-                            <td>0221 5156141</td>
-                            <td>17.04.1984</td>
-                            <td>FIA01</td>
-                            <td>Am Hockenheimring, 50xx Hockenheim</td>
-                            <td>Herr Eckelstones, 077 777 777 7</td>
-                            <td>Keine</td>
-                            <td class="unangemeldet">Unangemeldet</td>
+                            <td>{{ student.emergencyPerson }} {{ student.emergencyNumber }}</td>
+                            <td>{{ student.specialNutrition }} {{ student.specialImpairment }}</td>
+                            <td class="angemeldet">{{ student.status }}</td>
                             <td><a href="#"><i class="fas fa-user-minus"></i></a> | <a href="#"><i class="fas fa-user-edit"></i></a></td>
                         </tr>
                     </tbody>
@@ -124,7 +112,7 @@
         el: '#app',
         data () {
             return {
-                info: null
+                info: null,
             }
         },
         mounted () {
