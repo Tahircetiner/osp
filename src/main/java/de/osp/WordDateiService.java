@@ -20,26 +20,29 @@ import java.util.List;
      @Autowired
      StudentRepository studentRepository;
 
-     public void erstelleAnmeldungAlsWordDokument() throws Docx4JException, IOException, InvalidFormatException {
+     public void erstelleAnmeldungAlsWordDokument(String name, String birthDate, String city, String emailAddress, String emergencyNumber,String emergencyPerson,
+                                                  String grade, String gradeTeacher, Boolean isLegalOfAge,
+                                                  String number, String physicalImpairment, String specialNutrition, Boolean status, String street,
+                                                  String surName) throws Docx4JException, IOException, InvalidFormatException {
 
          XWPFDocument doc = new XWPFDocument(OPCPackage.open("C:\\neustaprojekte\\osp\\src\\main\\resources\\static\\intern\\docs\\Anmeldeformular2022.docx"));
          doc.write(new FileOutputStream("C:\\neustaprojekte\\osp\\src\\main\\resources\\static\\intern\\docs\\copies\\Anmeldeformular2022.docx"));
          doc.close();
-         ersetzePlaceHolderInWordDokument("NAME", "name");
-         ersetzePlaceHolderInWordDokument("BIRTHDATE", "birthDate");
-         ersetzePlaceHolderInWordDokument("CITY", "city");
-         ersetzePlaceHolderInWordDokument("EMAIL", "emailAddress");
-         ersetzePlaceHolderInWordDokument("EMERGENCYNUMBER", "emergencyNumber");
-         ersetzePlaceHolderInWordDokument("EMERGENCYPERSON", "emergencyPerson");
-         ersetzePlaceHolderInWordDokument("GRADE", "GRADE");
-         ersetzePlaceHolderInWordDokument("TEACHER", "gradeTeacher");
-         ersetzePlaceHolderInWordDokument("ISOFAGE", Boolean.toString(false));
-         ersetzePlaceHolderInWordDokument("NUMBER", "number");
-         ersetzePlaceHolderInWordDokument("PHYSICALIMPAIRMENT", "phsyicalimpairment");
-         ersetzePlaceHolderInWordDokument("SPECIALNUTRITION", "specialnutrition");
-         ersetzePlaceHolderInWordDokument("STATUS", Boolean.toString(false));
-         ersetzePlaceHolderInWordDokument("STREET", "street");
-         ersetzePlaceHolderInWordDokument("SURNAME", "surname");
+         ersetzePlaceHolderInWordDokument("NAME", name);
+         ersetzePlaceHolderInWordDokument("BIRTHDATE", birthDate);
+         ersetzePlaceHolderInWordDokument("CITY", city);
+         ersetzePlaceHolderInWordDokument("EMAIL", emailAddress);
+         ersetzePlaceHolderInWordDokument("EMERGENCYNUMBER", emergencyNumber);
+         ersetzePlaceHolderInWordDokument("EMERGENCYPERSON", emergencyPerson);
+         ersetzePlaceHolderInWordDokument("GRADE", grade);
+         ersetzePlaceHolderInWordDokument("TEACHER", gradeTeacher);
+         ersetzePlaceHolderInWordDokument("ISOFAGE", Boolean.toString(isLegalOfAge));
+         ersetzePlaceHolderInWordDokument("NUMBER", number);
+         ersetzePlaceHolderInWordDokument("PHYSICALIMPAIRMENT", physicalImpairment);
+         ersetzePlaceHolderInWordDokument("SPECIALNUTRITION", specialNutrition);
+         ersetzePlaceHolderInWordDokument("STATUS", Boolean.toString(status));
+         ersetzePlaceHolderInWordDokument("STREET", street);
+         ersetzePlaceHolderInWordDokument("SURNAME", surName);
          File file = new File("C:\\neustaprojekte\\osp\\src\\main\\resources\\static\\intern\\docs\\Anmeldeformular2022.docx");
          file.delete();
 
