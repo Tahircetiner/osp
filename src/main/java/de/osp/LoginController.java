@@ -2,6 +2,7 @@ package de.osp;
 import de.osp.Service.Hasher;
 import de.osp.Service.LoginCheck;
 import org.apache.coyote.Request;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.io.ByteArrayResource;
@@ -98,7 +99,7 @@ public class LoginController {
 
 
     @PostMapping("/formular")
-    public ValidationMessage saveStudentInformation(@RequestBody Student student){
+    public ValidationMessage saveStudentInformation(@RequestBody Student student) throws IOException, InvalidFormatException {
         Validation validation = new Validation();
         ValidationMessage validationMessage = new ValidationMessage();
 
@@ -109,6 +110,13 @@ public class LoginController {
         else{
             validationMessage.setMessage("Sie haben sich erfolgreich an dem Austauschprogramm angemeldet. Bitte wenden Sie sich an ihren zuständigen Lehrer mit ihrem ausgefüllten Anmeldeformular.");
             studentRepository.save(student);
+
+            WordDateiService wordDateiService = new WordDateiService();
+            wordDateiService.erstelleAnmeldungAlsWordDokument(student.getName(),
+                    student.getAge(), student.getCity(),student.getEmailAddress(), student.getEmergencyNumber(),
+                    student.getEmergencyPerson(), student.getGrade(), student.getGradeTeacher(), student.getIsOfLegalAge(),
+                    student.getNumber(),student.getPhysicalImpairment(), student.getSpecialNutrition()
+                    , student.getStatus(), student.getStreet(), student.getSurName());
         }
         return validationMessage;
     }
@@ -120,15 +128,8 @@ public class LoginController {
         headers.add("Pragma", "no-cache");
         headers.add("Expires", "0");
         headers.add("content-disposition", "attachment; filename=" + "anmeldeformular.docx");
-        Resource resource1 = new ClassPathResource("/static/intern/docs/Anmeldeformular2022.docx");
 
-        System.out.println(resource1.getURL().getPath().replaceAll("%20", "/"));
-        System.out.println(resource1.getURL());
-        System.out.println(resource1.getURI());
-        String tmp = resource1.getURL().getPath();
-        String tmp2 = tmp.replaceAll("/", "\\\\");
-
-        File file = new File(tmp2);
+        File file = new File("C:\\Projekte\\Schulprojekte\\osp\\src\\main\\resources\\static\\intern\\docs\\generated\\Anmeldeformular2022.docx");
         InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
 
         return ResponseEntity.ok()

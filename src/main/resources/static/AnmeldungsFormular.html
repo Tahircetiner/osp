@@ -136,7 +136,7 @@
                             <input v-model="formularInformation.emergencyNumber" type="text"
                                    class="form-control" id="formularInformation.AnsprechpartnerMobilfunknummer" placeholder="Mobilfunknummer beginnen mit +49" required>
                         </div>
-                        <p>{{message}}</p>
+                        <p style="color:red;">{{message}}</p>
                         <div class="col-12">
                             <button v-on:click="sendData();" class="btn btn-primary" id="formular">Schüler anmelden</button>
                         </div>

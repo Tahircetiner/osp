@@ -22,8 +22,8 @@ import java.util.List;
                                                   String number, String physicalImpairment, String specialNutrition, Boolean status, String street,
                                                   String surName) throws IOException, InvalidFormatException {
 
-         XWPFDocument doc = new XWPFDocument(OPCPackage.open("C:\\neustaprojekte\\osp\\src\\main\\resources\\static\\intern\\docs\\Anmeldeformular2022.docx"));
-         doc.write(new FileOutputStream("C:\\neustaprojekte\\osp\\src\\main\\resources\\static\\intern\\docs\\copies\\Anmeldeformular2022.docx"));
+         XWPFDocument doc = new XWPFDocument(OPCPackage.open("C:\\Projekte\\Schulprojekte\\osp\\src\\main\\resources\\static\\intern\\docs\\Anmeldeformular2022.docx"));
+         doc.write(new FileOutputStream("C:\\Projekte\\Schulprojekte\\osp\\src\\main\\resources\\static\\intern\\docs\\copies\\Anmeldeformular2022.docx"));
          doc.close();
          ersetzePlaceHolderInWordDokument("NAME", name);
          ersetzePlaceHolderInWordDokument("BIRTHDATE", birthDate);
@@ -39,21 +39,21 @@ import java.util.List;
          ersetzePlaceHolderInWordDokument("SPECIALNUTRITION", specialNutrition);
          ersetzePlaceHolderInWordDokument("STATUS", Boolean.toString(status));
          ersetzePlaceHolderInWordDokument("STREET", street);
-         ersetzePlaceHolderInWordDokument("SURNAME", surName);
-         File file = new File("C:\\neustaprojekte\\osp\\src\\main\\resources\\static\\intern\\docs\\Anmeldeformular2022.docx");
+         ersetzePlaceHolderInWordDokument("NAME1", surName);
+         File file = new File("C:\\Projekte\\Schulprojekte\\osp\\src\\main\\resources\\static\\intern\\docs\\Anmeldeformular2022.docx");
          file.delete();
 
-         XWPFDocument doc2 = new XWPFDocument(OPCPackage.open("C:\\neustaprojekte\\osp\\src\\main\\resources\\static\\intern\\docs\\copies\\Anmeldeformular2022.docx"));
-         doc2.write(new FileOutputStream("C:\\neustaprojekte\\osp\\src\\main\\resources\\static\\intern\\docs\\Anmeldeformular2022.docx"));
+         XWPFDocument doc2 = new XWPFDocument(OPCPackage.open("C:\\Projekte\\Schulprojekte\\osp\\src\\main\\resources\\static\\intern\\docs\\copies\\Anmeldeformular2022.docx"));
+         doc2.write(new FileOutputStream("C:\\Projekte\\Schulprojekte\\osp\\src\\main\\resources\\static\\intern\\docs\\Anmeldeformular2022.docx"));
          doc2.close();
 
-         File file1 = new File("C:\\neustaprojekte\\osp\\src\\main\\resources\\static\\intern\\docs\\copies\\Anmeldeformular2022.docx");
+         File file1 = new File("C:\\Projekte\\Schulprojekte\\osp\\src\\main\\resources\\static\\intern\\docs\\copies\\Anmeldeformular2022.docx");
          file1.delete();
      }
 
      private static void ersetzePlaceHolderInWordDokument(String artDesPlaceHolders, String wertAusDerDatenbank) throws InvalidFormatException, IOException {
          try {
-             XWPFDocument doc = new XWPFDocument(OPCPackage.open("C:\\neustaprojekte\\osp\\src\\main\\resources\\static\\intern\\docs\\Anmeldeformular2022.docx"));
+             XWPFDocument doc = new XWPFDocument(OPCPackage.open("C:\\Projekte\\Schulprojekte\\osp\\src\\main\\resources\\static\\intern\\docs\\Anmeldeformular2022.docx"));
              for (XWPFParagraph p : doc.getParagraphs()) {
                  List<XWPFRun> runs = p.getRuns();
                  if (runs != null) {
@@ -83,7 +83,7 @@ import java.util.List;
                      }
                  }
              }
-             doc.write(new FileOutputStream("Anmeldeformular2022ausgefuellt.docx"));
+             doc.write(new FileOutputStream("C:\\Projekte\\Schulprojekte\\osp\\src\\main\\resources\\static\\intern\\docs\\generated\\Anmeldeformular2022.docx"));
              doc.close();
          } catch (IOException e) {
              e.printStackTrace();
