@@ -63,20 +63,21 @@ public class ExcelService {
         for (Student i: schuelerDaten) {
             Row zeile = einzelnesSheetInExcelMappe.createRow(zeilennummer++);
             zeile.createCell(0).setCellValue(i.getId());
-            zeile.createCell(0).setCellValue(i.getAge());
-            zeile.createCell(0).setCellValue(i.getCity());
-            zeile.createCell(0).setCellValue(i.getEmailAddress());
-            zeile.createCell(0).setCellValue(i.getEmergencyNumber());
-            zeile.createCell(0).setCellValue(i.getEmergencyPerson());
-            zeile.createCell(0).setCellValue(i.getGrade());
-            zeile.createCell(0).setCellValue(i.getGradeTeacher());
-            zeile.createCell(0).setCellValue(i.getName());
-            zeile.createCell(0).setCellValue(i.getNumber());
-            zeile.createCell(0).setCellValue(i.getPhysicalImpairment());
-            zeile.createCell(0).setCellValue(i.getSpecialNutrition());
-            zeile.createCell(0).setCellValue(i.getStatus());
-            zeile.createCell(0).setCellValue(i.getStreet());
-            zeile.createCell(0).setCellValue(i.getSurName());
+            zeile.createCell(1).setCellValue(i.getAge());
+            zeile.createCell(2).setCellValue(i.getCity());
+            zeile.createCell(3).setCellValue(i.getEmailAddress());
+            zeile.createCell(4).setCellValue(i.getEmergencyNumber());
+            zeile.createCell(5).setCellValue(i.getEmergencyPerson());
+            zeile.createCell(6).setCellValue(i.getGrade());
+            zeile.createCell(7).setCellValue(i.getGradeTeacher());
+            zeile.createCell(8).setCellValue(i.getIsOfLegalAge().toString());
+            zeile.createCell(9).setCellValue(i.getName());
+            zeile.createCell(10).setCellValue(i.getNumber());
+            zeile.createCell(11).setCellValue(i.getPhysicalImpairment());
+            zeile.createCell(12).setCellValue(i.getSpecialNutrition());
+            zeile.createCell(13).setCellValue(i.getStatus().toString());
+            zeile.createCell(14).setCellValue(i.getStreet());
+            zeile.createCell(15).setCellValue(i.getSurName());
         }
     }
 

@@ -66,6 +66,9 @@ public class LoginController {
                 validationMessage.setMessage("Username und Passwort ist richtig.");
             }
         }
+        if(teacher == null){
+            validationMessage.setMessage("Username oder Passwort ist falsch");
+        }
         httpSession.setAttribute("username", teacher.getUsername());
         httpSession.setAttribute("hashedpassword", pwHash);
         return validationMessage;
@@ -79,7 +82,7 @@ public class LoginController {
         if((new LoginCheck()).Check(httpSession, teacherRepository)) {
             modelAndView.setViewName("overview");
         } else {
-            modelAndView.setViewName("index");
+            modelAndView.setViewName("login");
         }
         return modelAndView;
     }

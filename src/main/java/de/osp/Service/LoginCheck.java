@@ -20,8 +20,9 @@ public class LoginCheck {
             user = httpSession.getAttribute("username");
             pw = httpSession.getAttribute("hashedpassword");
         }
-        if(user != null && pw != null) {
-            Teacher teacherDb = teacherRepository.findByUsername(user.toString());
+        Teacher teacherDb = teacherRepository.findByUsername(user.toString());
+
+        if(user != null && pw != null && teacherDb != null) {
             return !(Hasher.hash(teacherDb.getPassword()).equals(pw));
         }
         return false;
