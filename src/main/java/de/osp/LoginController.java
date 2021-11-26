@@ -35,6 +35,9 @@ public class LoginController {
     @Autowired
     private TeacherRepository teacherRepository;
 
+    @Autowired
+    ExcelService excelService;
+
     @GetMapping("/generateSession")
     public ValidationMessage setSession(HttpServletRequest httpServletRequest ,HttpSession httpSession){
         httpSession = httpServletRequest.getSession(false);
@@ -130,8 +133,29 @@ public class LoginController {
         System.out.println(resource1.getURI());
         String tmp = resource1.getURL().getPath();
         String tmp2 = tmp.replaceAll("/", "\\\\");
-        System.out.println(tmp);
+
         File file = new File(tmp2);
+        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(file.length())
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(resource);
+    }
+
+
+    @RequestMapping(path = "/downloadExcelList", method = RequestMethod.GET)
+    public ResponseEntity<Resource> downloadExcelList(String param) throws IOException {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+        headers.add("Pragma", "no-cache");
+        headers.add("Expires", "0");
+        headers.add("content-disposition", "attachment; filename=" + "ausgefuellt.xlsx");
+
+        excelService.writeIntoExcel();
+
+        File file = new File("C:\\Projekte\\Schulprojekte\\osp\\src\\main\\resources\\static\\excel\\test.xlsx");
         InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
 
         return ResponseEntity.ok()

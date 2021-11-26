@@ -112,13 +112,12 @@
         el: '#app',
         data () {
             return {
-                info: null,
+                info: [],
             }
         },
         mounted () {
-            axios.post('/allowUrl').then(response => (this.info = response))
             axios
-                .get('/adminDataAll').then(response => (this.info = response))
+                .get('/adminDataAll').then(response => (this.info = response.data));
         },
     });
     $(document).ready(function() {

@@ -6,9 +6,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xwpf.usermodel.*;
 import org.apache.xmlbeans.XmlException;
-import org.docx4j.openpackaging.exceptions.Docx4JException;
-import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
-import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTRPr;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -23,7 +20,7 @@ import java.util.List;
      public void erstelleAnmeldungAlsWordDokument(String name, String birthDate, String city, String emailAddress, String emergencyNumber,String emergencyPerson,
                                                   String grade, String gradeTeacher, Boolean isLegalOfAge,
                                                   String number, String physicalImpairment, String specialNutrition, Boolean status, String street,
-                                                  String surName) throws Docx4JException, IOException, InvalidFormatException {
+                                                  String surName) throws IOException, InvalidFormatException {
 
          XWPFDocument doc = new XWPFDocument(OPCPackage.open("C:\\neustaprojekte\\osp\\src\\main\\resources\\static\\intern\\docs\\Anmeldeformular2022.docx"));
          doc.write(new FileOutputStream("C:\\neustaprojekte\\osp\\src\\main\\resources\\static\\intern\\docs\\copies\\Anmeldeformular2022.docx"));
@@ -54,7 +51,7 @@ import java.util.List;
          file1.delete();
      }
 
-     private static void ersetzePlaceHolderInWordDokument(String artDesPlaceHolders, String wertAusDerDatenbank) throws Docx4JException, InvalidFormatException, IOException {
+     private static void ersetzePlaceHolderInWordDokument(String artDesPlaceHolders, String wertAusDerDatenbank) throws InvalidFormatException, IOException {
          try {
              XWPFDocument doc = new XWPFDocument(OPCPackage.open("C:\\neustaprojekte\\osp\\src\\main\\resources\\static\\intern\\docs\\Anmeldeformular2022.docx"));
              for (XWPFParagraph p : doc.getParagraphs()) {

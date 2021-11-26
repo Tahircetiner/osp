@@ -3,14 +3,15 @@ package de.osp;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-
+@Service
 public class ExcelService {
     //DateiAusgabePfad, was kommt hier rein???
-    final private String DATEI_AUSGABE_PFAD                  = "DUMMY_DATEIPFAD";
+    final private String DATEI_AUSGABE_PFAD                  = "C:\\Projekte\\Schulprojekte\\osp\\src\\main\\resources\\static\\excel\\test.xlsx";
 
     //Hier sind die Strings fuer die SpaltenÜberschriften der ExcelTabelle
     final private String ID                  = "Idenktifikationsnummer";
