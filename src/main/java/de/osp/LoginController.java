@@ -1,5 +1,6 @@
 package de.osp;
 import de.osp.Service.Hasher;
+import de.osp.Service.LoginCheck;
 import org.apache.coyote.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -74,30 +75,20 @@ public class LoginController {
     @ResponseBody
     public ModelAndView getOverviewPage(HttpSession httpSession, HttpServletRequest httpServletRequest) throws NoSuchAlgorithmException, IOException, InterruptedException {
         Thread.sleep(1500);
-        Boolean isGlobalSessionNull = Objects.isNull(httpSession);
-        Object user = null;
-        Object pw = null;
         ModelAndView modelAndView = new ModelAndView();
-        if(!isGlobalSessionNull){
-            user = httpSession.getAttribute("username");
-            pw = httpSession.getAttribute("hashedpassword");
-        }
-        if(user != null && pw != null){
-            Teacher teacherDb = teacherRepository.findByUsername(user.toString());
-            if(!(Hasher.hash(teacherDb.getPassword()).equals(pw))) {
-                modelAndView.setViewName("overview");
-                return modelAndView;
-            }
-        }
-        else{
+        if((new LoginCheck()).Check(httpSession, teacherRepository)) {
+            modelAndView.setViewName("overview");
+        } else {
             modelAndView.setViewName("index");
-            return modelAndView;
         }
         return modelAndView;
     }
 
     @GetMapping("/adminDataAll")
-    public Iterable<Student> getAllStudents(){
+    public Iterable<Student> getAllStudents(HttpSession httpSession) throws NoSuchAlgorithmException {
+        if(!(new LoginCheck()).Check(httpSession, teacherRepository)) {
+            return null;
+        }
         return studentRepository.findAll();
     }
 
