@@ -73,7 +73,7 @@ public class LoginController {
     public ModelAndView getOverviewPage(HttpSession httpSession, HttpServletRequest httpServletRequest) throws NoSuchAlgorithmException, IOException, InterruptedException {
         Thread.sleep(1500);
         ModelAndView modelAndView = new ModelAndView();
-        if((new LoginCheck()).Check()) {
+        if((new LoginCheck()).Check(httpSession, teacherRepository)) {
             modelAndView.setViewName("overview");
         } else {
             modelAndView.setViewName("index");
@@ -82,8 +82,8 @@ public class LoginController {
     }
 
     @GetMapping("/adminDataAll")
-    public Iterable<Student> getAllStudents() throws NoSuchAlgorithmException {
-        if(!(new LoginCheck()).Check()) {
+    public Iterable<Student> getAllStudents(HttpSession httpSession) throws NoSuchAlgorithmException {
+        if(!(new LoginCheck()).Check(httpSession, teacherRepository)) {
             return null;
         }
         return studentRepository.findAll();
